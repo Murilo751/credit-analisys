@@ -1,6 +1,19 @@
 package com.example.creditanalisys.model.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
-public record UserDTO(Long id, String username, String password, String phoneNumber, String email, LocalDate birthday) {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO {
+    private Long id;
+    private String username;
+    private String password;
+    private String phone;
+    private String email;
+    private LocalDate birthday;
 }
