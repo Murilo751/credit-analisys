@@ -6,9 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "users")
-//@Table(name = "users")
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +22,7 @@ public class User {
     private String phone;
     private String email;
     private LocalDate birthday;
+
+    @OneToMany(mappedBy = "analise")
+    private List<AnaliseCred> analiseCreds;
 }
