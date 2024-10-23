@@ -1,7 +1,0 @@
-Eae moh fi, so explicar uns negocios antes de botar a mão na massa;
-as pastas são organizadas como camelcase então caso precise criar uma pasta nova e ela for nome composto fica tipo pastaSegurança;
-os arquivos são em pascal case entao começa sempre com letra maiuscula e a cada palavra vc coloca a letra maiuscula
-tipo UserDTO ou UserRepository;
-ao começar uma feature nova criar uma branch para essa feature e depois a gente da um mearge;
-ao começar a sua primeira branch apagar todos esse txt que eu coloquei dentro das pastas(foi so para salvar a organização  das pastas);
-qualquer coisa me manda um zap
