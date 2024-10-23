@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity(name = "users")
-@Table(name = "users")
+//@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
