@@ -22,9 +22,9 @@ public class UserService {
     private UserConverter userConverter;
 
     public UserDTO createUser(UserDTO userDTO) {
-        User user = userConverter.converterDTO(userDTO);
+        User user = userConverter.converterDTOToEntity(userDTO);
         User savedUser = userRepository.save(user);
-        return UserConverter.converterEntity(savedUser);
+        return UserConverter.converterEntityToDTO(savedUser);
     }
 
     public ResponseEntity<UserDTO> updateUser(UserDTO userDTO, Long id){
@@ -37,18 +37,18 @@ public class UserService {
             userUpdated.setEmail(userDTO.getEmail());
             userUpdated.setBirthday(userDTO.getBirthday());
             User savedUser = userRepository.save(userUpdated);
-            return ResponseEntity.ok(UserConverter.converterEntity(savedUser));
+            return ResponseEntity.ok(UserConverter.converterEntityToDTO(savedUser));
         }
         return ResponseEntity.notFound().build();
     }
 
     public Optional<UserDTO> getUserById(Long id){
-        return userRepository.findById(id).map(UserConverter::converterEntity);
+        return userRepository.findById(id).map(UserConverter::converterEntityToDTO);
     }
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserConverter::converterEntity).collect(Collectors.toList());
+        return users.stream().map(UserConverter::converterEntityToDTO).collect(Collectors.toList());
     }
 
     public ResponseEntity<UserDTO> deleteUser(Long id){
@@ -56,7 +56,7 @@ public class UserService {
         if (userOptional.isPresent()){
             User user = userOptional.get();
             userRepository.delete(user);
-            return ResponseEntity.ok(UserConverter.converterEntity(user));
+            return ResponseEntity.ok(UserConverter.converterEntityToDTO(user));
         }
         return ResponseEntity.notFound().build();
     }

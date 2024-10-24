@@ -23,6 +23,6 @@ public class AnaliseCred {
     private LocalDate dataAnalise;
 
     @ManyToOne
-    @JoinColumn(name = "solicitacao", nullable = false)
+    @JoinColumn(name = "solicitacao_id", nullable = false)
     private SolicitacaoCredito solicitacao;
 }
