@@ -12,19 +12,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService {
     private UserRepository userRepository;
-    private UserConverter userConverter;
 
     public UserDTO createUser(UserDTO userDTO) {
-        User user = userConverter.converterDTO(userDTO);
+        User user = DozerConverter.parseObject(userDTO, User.class);
         User savedUser = userRepository.save(user);
-        return UserConverter.converterEntity(savedUser);
+        return DozerConverter.parseObject(savedUser, UserDTO.class);
     }
 
     public ResponseEntity<UserDTO> updateUser(UserDTO userDTO, Long id){
@@ -37,7 +35,7 @@ public class UserService {
             userUpdated.setEmail(userDTO.getEmail());
             userUpdated.setBirthday(userDTO.getBirthday());
             User savedUser = userRepository.save(userUpdated);
-            return ResponseEntity.ok(UserConverter.converterEntity(savedUser));
+            return ResponseEntity.ok(DozerConverter.parseObject(savedUser, UserDTO.class));
         }
         return ResponseEntity.notFound().build();
     }
@@ -48,7 +46,7 @@ public class UserService {
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return DozerConverter.parseListObjects(users);
+        return DozerConverter.parseListObjects(users, UserDTO.class);
     }
 
     public ResponseEntity<UserDTO> deleteUser(Long id){
