@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class SolicitacaoCredito {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long user_id;
     private String Status;

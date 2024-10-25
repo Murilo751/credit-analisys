@@ -1,9 +1,9 @@
 package com.example.creditanalisys.services;
 
+import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.UserDTO;
 import com.example.creditanalisys.model.entities.User;
 import com.example.creditanalisys.repositories.UserRepository;
-import com.example.creditanalisys.converter.UserConverter;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +42,13 @@ public class UserService {
         return ResponseEntity.notFound().build();
     }
 
-    public Optional<UserDTO> getUserById(Long id){
-        return userRepository.findById(id).map(UserConverter::converterEntity);
+    public UserDTO getUserById(Long id){
+        return DozerConverter.parseObject(userRepository.findById(id), UserDTO.class);
     }
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserConverter::converterEntity).collect(Collectors.toList());
+        return DozerConverter.parseListObjects(users);
     }
 
     public ResponseEntity<UserDTO> deleteUser(Long id){
@@ -56,7 +56,7 @@ public class UserService {
         if (userOptional.isPresent()){
             User user = userOptional.get();
             userRepository.delete(user);
-            return ResponseEntity.ok(UserConverter.converterEntity(user));
+            return ResponseEntity.ok(DozerConverter.parseObject(user, UserDTO.class));
         }
         return ResponseEntity.notFound().build();
     }
