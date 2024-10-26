@@ -1,6 +1,8 @@
 package com.example.creditanalisys.services;
 
+import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.AnaliseDTO;
+import com.example.creditanalisys.model.dtos.SolCredDTO;
 import com.example.creditanalisys.model.entities.AnaliseCred;
 import com.example.creditanalisys.model.entities.SolicitacaoCredito;
 import com.example.creditanalisys.repositories.AnaliseCredRepository;
@@ -12,17 +14,19 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class AnaliseService {
     private AnaliseCredRepository analiseCredRepository;
+    private CredService credService;
 
-//    public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
-//        SolicitacaoCredito solicitacaoCredito = soliCredService.getSolById(analiseDTO.getSolicitacao_id());
-//        if(solicitacaoCredito == null){
-//            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacao_id());
-//        }
-//
-//        AnaliseCred analiseCred = AnaliseConverter.convertAnaliseCredToDTO(analiseDTO, soliCredService);
-//        analiseCred.setSolicitacao(solicitacaoCredito);
-//
-//        return analiseCredRepository.save(analiseCred);
-//    }
+    public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
+        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacao_id());
+        if(solicitacaoCreditoDTO == null){
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacao_id());
+        }
+
+        AnaliseCred analiseCred = null;
+        analiseCred.setSolicitacao(DozerConverter.parseObject(solicitacaoCreditoDTO, SolicitacaoCredito.class));
+
+
+        return analiseCredRepository.save(analiseCred);
+    }
 
 }
