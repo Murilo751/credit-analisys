@@ -2,6 +2,9 @@ package com.example.creditanalisys.services;
 
 import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.SolCredDTO;
+import com.example.creditanalisys.model.dtos.UserDTO;
+import com.example.creditanalisys.model.entities.SolicitacaoCredito;
+import com.example.creditanalisys.model.entities.User;
 import com.example.creditanalisys.repositories.SoliCredRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,5 +17,10 @@ public class CredService {
 
     public SolCredDTO getSolCredById(Long id){
         return DozerConverter.parseObject(soliCredRepository.findById(id), SolCredDTO.class);
+    }
+    public SolCredDTO createSolCred(SolCredDTO solCredDTO) {
+        SolicitacaoCredito solicitacaoCredito = DozerConverter.parseObject(solCredDTO, SolicitacaoCredito.class);
+        SolicitacaoCredito savedSolCred = soliCredRepository.save(solicitacaoCredito);
+        return DozerConverter.parseObject(savedSolCred, SolCredDTO.class);
     }
 }

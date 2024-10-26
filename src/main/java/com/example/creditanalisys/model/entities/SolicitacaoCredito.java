@@ -17,7 +17,9 @@ public class SolicitacaoCredito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     private String Status;
     private BigDecimal valor;
     private LocalDate data_solicitacao;
