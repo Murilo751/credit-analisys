@@ -1,8 +1,6 @@
 package com.example.creditanalisys.services;
 
-import com.example.creditanalisys.converter.AnaliseConverter;
 import com.example.creditanalisys.model.dtos.AnaliseDTO;
-import com.example.creditanalisys.model.dtos.UserDTO;
 import com.example.creditanalisys.model.entities.AnaliseCred;
 import com.example.creditanalisys.model.entities.SolicitacaoCredito;
 import com.example.creditanalisys.repositories.AnaliseCredRepository;
@@ -11,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor(onConstructor_ = @__(@Autowired))
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class AnaliseService {
     private AnaliseCredRepository analiseCredRepository;
-    private AnaliseConverter analiseConverter;
 
 //    public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
 //        SolicitacaoCredito solicitacaoCredito = soliCredService.getSolById(analiseDTO.getSolicitacao_id());

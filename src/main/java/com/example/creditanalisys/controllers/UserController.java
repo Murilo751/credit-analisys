@@ -32,9 +32,7 @@ public class UserController {
 
     @GetMapping(value = "/getUserById/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable @Valid Long id){
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping(value = "/getAllUsers")
