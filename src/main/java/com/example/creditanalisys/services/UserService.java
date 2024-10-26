@@ -44,6 +44,7 @@ public class UserService {
         return DozerConverter.parseObject(userRepository.findById(id), UserDTO.class);
     }
 
+
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
         return DozerConverter.parseListObjects(users, UserDTO.class);
