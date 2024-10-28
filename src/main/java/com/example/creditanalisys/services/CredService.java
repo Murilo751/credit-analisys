@@ -28,7 +28,7 @@ public class CredService {
         return DozerConverter.parseObject(savedSolCred, SolCredDTO.class);
     }
     public ResponseEntity<SolCredDTO> deleteSolicitacaoCredito(Long id){
-        Optional<SolicitacaoCredito> solicitacaoCreditoOptional = SoliCredRepository.findById(id);
+        Optional<SolicitacaoCredito> solicitacaoCreditoOptional = soliCredRepository.findById(id);
         if (solicitacaoCreditoOptional.isPresent()){
             SolicitacaoCredito solicitacao = solicitacaoCreditoOptional.get();
             soliCredRepository.delete(solicitacao);
