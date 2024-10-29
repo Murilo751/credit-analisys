@@ -36,9 +36,17 @@ public class CredService {
         }
         return ResponseEntity.notFound().build();
     }
-
     public List<SolCredDTO> getAllSolitacoes(){
         List<SolicitacaoCredito> solicitacoes = soliCredRepository.findAll();
         return DozerConverter.parseListObjects(solicitacoes, SolCredDTO.class);
+    }
+    public ResponseEntity<SolCredDTO> updateSolicitacaoCredito(Long id, SolCredDTO solCredDTO){
+        SolicitacaoCredito solicitacaoCredito = DozerConverter.parseObject(getSolCredById(id), SolicitacaoCredito.class);
+        if (solicitacaoCredito != null){
+            SolicitacaoCredito solicitacao = solicitacaoCredito;
+            soliCredRepository.save(solicitacao);
+            return ResponseEntity.ok(DozerConverter.parseObject(solicitacao, SolCredDTO.class));
+        }
+        return ResponseEntity.notFound().build();
     }
 }
