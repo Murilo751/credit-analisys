@@ -5,24 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
-@Entity(name = "users")
-@Table(name = "users")
+@Entity(name = "solicitacao")
+@Table(name = "solicitacao")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class SolicitacaoCredito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String phone;
-    private String email;
-    private LocalDate birthday;
-
-    @OneToMany(mappedBy = "analise")
-    private List<AnaliseCred> analiseCreds;
+    private Long user_id;
+    private String Status;
+    private BigDecimal valor;
+    private LocalDate data_solicitacao;
 }
