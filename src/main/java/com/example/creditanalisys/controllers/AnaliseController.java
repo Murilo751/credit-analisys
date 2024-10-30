@@ -45,4 +45,10 @@ public class AnaliseController {
     public ResponseEntity<AnaliseDTO> deleteAnalise(@PathVariable @Valid Long id){
         return analiseService.deleteAnalise(id);
     }
+
+    @PostMapping("/calculo/{solicitacaoId}")
+    public ResponseEntity<AnaliseDTO> calcularCredito(@PathVariable Long solicitacaoId) {
+        AnaliseDTO analiseDTO = analiseService.calcCred(solicitacaoId);
+        return ResponseEntity.ok(analiseDTO);
+    }
 }

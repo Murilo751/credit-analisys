@@ -15,5 +15,5 @@ public class AnaliseDTO {
     private String descricao;
     private Status resultado;
     private LocalDate dataAnalise;
-    private Long solicitacao_id;
+    private Long solicitacaoId;
 }

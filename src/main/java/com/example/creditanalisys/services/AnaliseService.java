@@ -5,12 +5,15 @@ import com.example.creditanalisys.model.dtos.AnaliseDTO;
 import com.example.creditanalisys.model.dtos.SolCredDTO;
 import com.example.creditanalisys.model.entities.AnaliseCred;
 import com.example.creditanalisys.model.entities.SolicitacaoCredito;
+import com.example.creditanalisys.model.entities.Status;
 import com.example.creditanalisys.repositories.AnaliseCredRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,12 +23,13 @@ public class AnaliseService {
     private CredService credService;
 
     public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
-        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacao_id());
+        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacaoId());
         if(solicitacaoCreditoDTO == null){
-            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacao_id());
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacaoId());
         }
 
         AnaliseCred analiseCred = new AnaliseCred();
+        analiseCred.setResultado(Status.PENDENTE);
         analiseCred.setSolicitacao(DozerConverter.parseObject(solicitacaoCreditoDTO, SolicitacaoCredito.class));
 
 
@@ -62,6 +66,39 @@ public class AnaliseService {
         }else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    public boolean isCredAprovado(SolicitacaoCredito solicitacaoCredito){
+        BigDecimal limiteAprov = new BigDecimal("10000");
+//        String historicoCred = solicitacaoCredito.getHistoricoCred();
+
+//        return solicitacaoCredito.getValor().compareTo(limiteAprov) < 0 && "bom".equalsIgnoreCase(historicoCred);
+        return solicitacaoCredito.getValor().compareTo(limiteAprov) < 0;
+    }
+
+    public AnaliseDTO calcCred(Long solicitacao_id){
+        SolicitacaoCredito solCred = DozerConverter.parseObject(credService.getSolCredById(solicitacao_id),SolicitacaoCredito.class);
+        if (solCred == null){
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + solicitacao_id);
+        }
+
+        AnaliseCred analiseCred = new AnaliseCred();
+        analiseCred.setSolicitacao(solCred);
+
+        boolean aprovado = isCredAprovado(solCred);
+        analiseCred.setResultado(aprovado ? Status.APROVADO : Status.REJEITADO);
+        analiseCred.setDescricao(aprovado ? "Crédito aprovado" : "Crédito rejeitado");
+        analiseCred.setDataAnalise(LocalDate.now());
+
+        AnaliseCred savedAnalise = analiseCredRepository.save(analiseCred);
+
+        if (aprovado){
+            solCred.setStatus(Status.APROVADO);
+            SolCredDTO solCredDTO = DozerConverter.parseObject(solCred, SolCredDTO.class);
+            credService.updateSolicitacaoCredito(solCred.getId(), solCredDTO);
+        }
+
+        return DozerConverter.parseObject(savedAnalise, AnaliseDTO.class);
     }
 
 }

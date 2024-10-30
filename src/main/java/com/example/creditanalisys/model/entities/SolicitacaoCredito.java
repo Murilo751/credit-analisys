@@ -20,7 +20,7 @@ public class SolicitacaoCredito {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    private String Status;
+    private Status Status;
     private BigDecimal valor;
     private LocalDate data_solicitacao;
 }
