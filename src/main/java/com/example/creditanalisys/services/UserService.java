@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,25 +24,24 @@ public class UserService {
         return DozerConverter.parseObject(savedUser, UserDTO.class);
     }
 
-    public ResponseEntity<UserDTO> updateUser(UserDTO userDTO, Long id){
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()){
-            User userUpdated = userOptional.get();
-            userUpdated.setUsername(userDTO.getUsername());
-            userUpdated.setPassword(userDTO.getPassword());
-            userUpdated.setPhone(userDTO.getPhone());
-            userUpdated.setEmail(userDTO.getEmail());
-            userUpdated.setBirthday(userDTO.getBirthday());
-            User savedUser = userRepository.save(userUpdated);
-            return ResponseEntity.ok(DozerConverter.parseObject(savedUser, UserDTO.class));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
     public UserDTO getUserById(Long id){
         return DozerConverter.parseObject(userRepository.findById(id), UserDTO.class);
     }
 
+    public ResponseEntity<UserDTO> updateUser(UserDTO userDTO, Long id){
+        User userSearch = DozerConverter.parseObject(getUserById(id), User.class);
+        if (userSearch == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            userSearch.setUsername(userDTO.getUsername());
+            userSearch.setPassword(userDTO.getPassword());
+            userSearch.setPhone(userDTO.getPhone());
+            userSearch.setEmail(userDTO.getEmail());
+            userSearch.setBirthday(userDTO.getBirthday());
+            User savedUser = userRepository.save(userSearch);
+            return ResponseEntity.ok(DozerConverter.parseObject(savedUser, UserDTO.class));
+        }
+    }
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
@@ -51,11 +49,10 @@ public class UserService {
     }
 
     public ResponseEntity<UserDTO> deleteUser(Long id){
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()){
-            User user = userOptional.get();
-            userRepository.delete(user);
-            return ResponseEntity.ok(DozerConverter.parseObject(user, UserDTO.class));
+        User userOptional = DozerConverter.parseObject(getUserById(id), User.class);
+        if (userOptional != null){
+            userRepository.delete(userOptional);
+            return ResponseEntity.ok(DozerConverter.parseObject(userOptional, UserDTO.class));
         }
         return ResponseEntity.notFound().build();
     }
