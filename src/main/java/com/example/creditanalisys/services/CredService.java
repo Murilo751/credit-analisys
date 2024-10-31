@@ -4,6 +4,7 @@ import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.SolCredDTO;
 import com.example.creditanalisys.model.dtos.UserDTO;
 import com.example.creditanalisys.model.entities.SolicitacaoCredito;
+import com.example.creditanalisys.model.entities.Status;
 import com.example.creditanalisys.model.entities.User;
 import com.example.creditanalisys.repositories.SoliCredRepository;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class CredService {
     }
     public SolCredDTO createSolCred(SolCredDTO solCredDTO) {
         SolicitacaoCredito solicitacaoCredito = DozerConverter.parseObject(solCredDTO, SolicitacaoCredito.class);
+        solicitacaoCredito.setStatus(String.valueOf(Status.PENDENTE));
         SolicitacaoCredito savedSolCred = soliCredRepository.save(solicitacaoCredito);
         return DozerConverter.parseObject(savedSolCred, SolCredDTO.class);
     }
