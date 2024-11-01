@@ -24,9 +24,9 @@ public class AnaliseService {
 
     public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
 
-        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacao_id());
+        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacaoId());
         if(solicitacaoCreditoDTO == null){
-            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacao_id());
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacaoId());
 
         }
 
@@ -78,10 +78,10 @@ public class AnaliseService {
 
     }
 
-    public AnaliseDTO calcCred(Long solicitacao_id){
-        SolicitacaoCredito solCred = DozerConverter.parseObject(credService.getSolCredById(solicitacao_id),SolicitacaoCredito.class);
+    public AnaliseDTO calcCred(Long solicitacaoId){
+        SolicitacaoCredito solCred = DozerConverter.parseObject(credService.getSolCredById(solicitacaoId),SolicitacaoCredito.class);
         if (solCred == null){
-            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + solicitacao_id);
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + solicitacaoId);
         }
 
         AnaliseCred analiseCred = new AnaliseCred();

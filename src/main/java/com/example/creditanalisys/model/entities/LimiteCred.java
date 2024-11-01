@@ -18,13 +18,10 @@ public class LimiteCred {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
     private BigDecimal valor;
-    private LocalDate data_Aprovacao;
-
-    public LimiteCred(BigDecimal valor){
-        this.valor = valor;
-    }
+    private LocalDate dataAprovacao;
 
     private BigDecimal limitePadrao = new BigDecimal("100000");
 

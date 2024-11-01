@@ -1,8 +1,6 @@
 package com.example.creditanalisys.controllers;
 
 import com.example.creditanalisys.model.dtos.SolCredDTO;
-import com.example.creditanalisys.model.dtos.UserDTO;
-import com.example.creditanalisys.model.entities.SolicitacaoCredito;
 import com.example.creditanalisys.services.CredService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/solicitacao")
+@RequestMapping(value = "/api/solicitacao")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SolCredController {
 
