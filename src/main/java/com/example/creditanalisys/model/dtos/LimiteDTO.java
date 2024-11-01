@@ -13,6 +13,6 @@ import java.time.LocalDate;
 public class LimiteDTO {
     private Long id;
     private BigDecimal valor;
-    private LocalDate data_Aprovacao;
-    private Long user_id;
+    private LocalDate dataAprovacao;
+    private Long userId;
 }

@@ -3,7 +3,9 @@ package com.example.creditanalisys.model.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,16 +15,33 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class LimiteCred {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
     private BigDecimal valor;
-    private LocalDate data_Aprovacao;
+    private LocalDate dataAprovacao;
 
-    public LimiteCred(BigDecimal valor){
-        this.valor = valor;
+    @Getter
+    private BigDecimal limitePadrao = new BigDecimal("10000");
+
+    public BigDecimal calcularLimitePorHistorico(String historicoCred) {
+        switch (historicoCred.toLowerCase()) {
+            case "excelente":
+                return limitePadrao.multiply(new BigDecimal("1.5"));
+            case "bom":
+                return limitePadrao;
+            case "moderado":
+                return limitePadrao.multiply(new BigDecimal("0.8"));
+            case "ruim":
+                return limitePadrao.multiply(new BigDecimal("0.5"));
+            default:
+                return limitePadrao.multiply(new BigDecimal("0.5"));
+        }
     }
+
 }
