@@ -1,6 +1,5 @@
 package com.example.creditanalisys.model.dtos;
 
-import com.example.creditanalisys.model.entities.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +10,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class SolCredDTO {
+public class LimiteDTO {
     private Long id;
-    private Long user_id;
-    private Status status;
     private BigDecimal valor;
-    private LocalDate data_solicitacao;
+    private LocalDate data_Aprovacao;
+    private Long user_id;
 }

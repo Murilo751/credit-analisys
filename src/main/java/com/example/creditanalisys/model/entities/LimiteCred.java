@@ -8,20 +8,21 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity(name = "solicitacao")
-@Table(name = "solicitacao")
+@Entity(name = "limite")
+@Table(name = "limite")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SolicitacaoCredito {
+public class LimiteCred {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
-    private Status Status;
+    @JoinColumn(name = "user_id", nullable = false)
     private BigDecimal valor;
-    private LocalDate data_solicitacao;
-    private String historicoCredito;
+    private LocalDate data_Aprovacao;
+
+    public LimiteCred(BigDecimal valor){
+        this.valor = valor;
+    }
 }
