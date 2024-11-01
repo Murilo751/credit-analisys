@@ -23,6 +23,6 @@ public class User {
     private String email;
     private LocalDate birthday;
 
-    @OneToMany(mappedBy = "analise")
-    private List<AnaliseCred> analiseCreds;
+    @OneToMany(mappedBy = "solicitacao.user") // Correção no `mappedBy`
+    private List<SolicitacaoCredito> solicitacoes;
 }
