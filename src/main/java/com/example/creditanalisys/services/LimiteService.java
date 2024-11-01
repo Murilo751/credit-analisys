@@ -3,6 +3,7 @@ package com.example.creditanalisys.services;
 import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.LimiteDTO;
 import com.example.creditanalisys.model.entities.LimiteCred;
+import com.example.creditanalisys.model.entities.User;
 import com.example.creditanalisys.repositories.LimiteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,16 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class LimiteService {
     private LimiteRepository limiteRepository;
+    private UserService userService;
 
-    public LimiteDTO createLimit(LimiteDTO limiteDTO) {
+    public LimiteDTO createLimit(LimiteDTO limiteDTO, Long userId) {
+        User catchUser = DozerConverter.parseObject(userService.getUserById(userId), User.class);
+        if(catchUser == null){
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + userId);
+
+        }
         LimiteCred limiteCred = DozerConverter.parseObject(limiteDTO, LimiteCred.class);
+        limiteCred.setUserId(catchUser.getId());
         LimiteCred savedLimit = limiteRepository.save(limiteCred);
         return DozerConverter.parseObject(savedLimit, LimiteDTO.class);
     }

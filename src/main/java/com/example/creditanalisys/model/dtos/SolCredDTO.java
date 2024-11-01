@@ -18,4 +18,5 @@ public class SolCredDTO {
     private Status status;
     private BigDecimal valor;
     private LocalDate data_solicitacao;
+    private String historicoCredito;
 }

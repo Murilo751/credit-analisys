@@ -21,9 +21,9 @@ import java.util.List;
 public class AnaliseController {
     private AnaliseService analiseService;
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<AnaliseDTO> createAnalise(@RequestBody @Valid AnaliseDTO analiseDTO) {
-        AnaliseCred analiseCreate = analiseService.createAnalise(analiseDTO);
+    @PostMapping(value = "/create/{idSol}")
+    public ResponseEntity<AnaliseDTO> createAnalise(@RequestBody @Valid AnaliseDTO analiseDTO, @PathVariable @Valid Long idSol) {
+        AnaliseCred analiseCreate = analiseService.createAnalise(analiseDTO, idSol);
         return ResponseEntity.ok(DozerConverter.parseObject(analiseCreate, AnaliseDTO.class));
     }
 

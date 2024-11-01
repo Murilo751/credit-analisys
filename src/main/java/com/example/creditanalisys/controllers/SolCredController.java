@@ -18,9 +18,9 @@ public class SolCredController {
 
     private CredService credService;
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<SolCredDTO> create(@RequestBody @Valid SolCredDTO solCredDTO) {
-        SolCredDTO solicitacaoCredito = credService.createSolCred(solCredDTO);
+    @PostMapping(value = "/create/{userId}")
+    public ResponseEntity<SolCredDTO> create(@RequestBody @Valid SolCredDTO solCredDTO, @PathVariable @Valid Long userId) {
+        SolCredDTO solicitacaoCredito = credService.createSolCred(solCredDTO, userId);
         return ResponseEntity.ok(solicitacaoCredito);
     }
 

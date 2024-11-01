@@ -1,0 +1,1 @@
+CREATE TYPE limiteEnum AS ENUM ('ALTO', 'MEDIO', 'BAIXO');
