@@ -4,6 +4,7 @@ import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.AnaliseDTO;
 import com.example.creditanalisys.model.dtos.SolCredDTO;
 import com.example.creditanalisys.model.entities.AnaliseCred;
+import com.example.creditanalisys.model.entities.LimiteCred;
 import com.example.creditanalisys.model.entities.SolicitacaoCredito;
 import com.example.creditanalisys.model.entities.Status;
 import com.example.creditanalisys.repositories.AnaliseCredRepository;
@@ -21,11 +22,14 @@ import java.util.List;
 public class AnaliseService {
     private AnaliseCredRepository analiseCredRepository;
     private CredService credService;
+    private LimiteCred limiteCred;
 
     public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
-        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacao_id());
+
+        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacaoId());
         if(solicitacaoCreditoDTO == null){
-            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacao_id());
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacaoId());
+
         }
 
         AnaliseCred analiseCred = new AnaliseCred();
@@ -69,16 +73,15 @@ public class AnaliseService {
     }
 
     public boolean isCredAprovado(SolicitacaoCredito solicitacaoCredito){
-        BigDecimal limiteAprov = new BigDecimal("10000");
-        String historicoCred = solicitacaoCredito.getHistoricoCredito();
+        BigDecimal limiteAprov = limiteCred.calcularLimitePorHistorico(solicitacaoCredito.getHistoricoCredito());
 
-        return solicitacaoCredito.getValor().compareTo(limiteAprov) < 0 && "bom".equalsIgnoreCase(historicoCred);
+        return solicitacaoCredito.getValor().compareTo(limiteAprov) < 0;
     }
 
-    public AnaliseDTO calcCred(Long solicitacao_id){
-        SolicitacaoCredito solCred = DozerConverter.parseObject(credService.getSolCredById(solicitacao_id),SolicitacaoCredito.class);
+    public AnaliseDTO calcCred(Long solicitacaoId){
+        SolicitacaoCredito solCred = DozerConverter.parseObject(credService.getSolCredById(solicitacaoId),SolicitacaoCredito.class);
         if (solCred == null){
-            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + solicitacao_id);
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + solicitacaoId);
         }
 
         AnaliseCred analiseCred = new AnaliseCred();
@@ -93,12 +96,14 @@ public class AnaliseService {
 
         if (aprovado){
             solCred.setStatus(Status.APROVADO);
+
         }else {
             solCred.setStatus(Status.REJEITADO);
         }
 
         SolCredDTO solCredDTO = DozerConverter.parseObject(solCred, SolCredDTO.class);
         credService.updateSolicitacaoCredito(solCred.getId(), solCredDTO);
+
 
         return DozerConverter.parseObject(savedAnalise, AnaliseDTO.class);
     }
