@@ -4,6 +4,7 @@ import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.AnaliseDTO;
 import com.example.creditanalisys.model.dtos.SolCredDTO;
 import com.example.creditanalisys.model.entities.AnaliseCred;
+import com.example.creditanalisys.model.entities.LimiteCred;
 import com.example.creditanalisys.model.entities.SolicitacaoCredito;
 import com.example.creditanalisys.model.entities.Status;
 import com.example.creditanalisys.repositories.AnaliseCredRepository;
@@ -21,6 +22,7 @@ import java.util.List;
 public class AnaliseService {
     private AnaliseCredRepository analiseCredRepository;
     private CredService credService;
+    private LimiteCred limiteCred;
 
     public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
 
@@ -71,11 +73,9 @@ public class AnaliseService {
     }
 
     public boolean isCredAprovado(SolicitacaoCredito solicitacaoCredito){
-        BigDecimal limiteAprov = new BigDecimal("10000");
-        String historicoCred = solicitacaoCredito.getHistoricoCredito();
+        BigDecimal limiteAprov = limiteCred.calcularLimitePorHistorico(solicitacaoCredito.getHistoricoCredito());
 
-        return solicitacaoCredito.getValor().compareTo(limiteAprov) < 0 && "bom".equalsIgnoreCase(historicoCred);
-
+        return solicitacaoCredito.getValor().compareTo(limiteAprov) < 0;
     }
 
     public AnaliseDTO calcCred(Long solicitacaoId){

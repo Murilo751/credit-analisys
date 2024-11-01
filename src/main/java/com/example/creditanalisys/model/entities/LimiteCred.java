@@ -3,7 +3,9 @@ package com.example.creditanalisys.model.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class LimiteCred {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,20 +26,22 @@ public class LimiteCred {
     private BigDecimal valor;
     private LocalDate dataAprovacao;
 
-    private BigDecimal limitePadrao = new BigDecimal("100000");
+    @Getter
+    private BigDecimal limitePadrao = new BigDecimal("10000");
 
     public BigDecimal calcularLimitePorHistorico(String historicoCred) {
         switch (historicoCred.toLowerCase()) {
             case "excelente":
-                return limitePadrao.multiply(new BigDecimal("1.5")); //aumenta o limite em 50%
+                return limitePadrao.multiply(new BigDecimal("1.5"));
             case "bom":
                 return limitePadrao;
             case "moderado":
-                return limitePadrao.multiply(new BigDecimal("0.8")); //reduz o limite em 20%
+                return limitePadrao.multiply(new BigDecimal("0.8"));
             case "ruim":
-                return limitePadrao.multiply(new BigDecimal("0.5")); //reduz o limite em 50%
+                return limitePadrao.multiply(new BigDecimal("0.5"));
             default:
-                return BigDecimal.ZERO; //crédito negado para histórico desconhecido
+                return limitePadrao.multiply(new BigDecimal("0.5"));
         }
     }
+
 }
