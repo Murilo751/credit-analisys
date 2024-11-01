@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller(value = "/api/analise")
-@RequestMapping
+@Controller
+@RequestMapping(value = "/api/analise")
 @RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class AnaliseController {
     private AnaliseService analiseService;
 
-    @PostMapping(value = "/createAnalise")
+    @PostMapping(value = "/create")
     public ResponseEntity<AnaliseDTO> createAnalise(@RequestBody @Valid AnaliseDTO analiseDTO) {
         AnaliseCred analiseCreate = analiseService.createAnalise(analiseDTO);
         return ResponseEntity.ok(DozerConverter.parseObject(analiseCreate, AnaliseDTO.class));
