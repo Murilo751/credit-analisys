@@ -46,4 +46,14 @@ public class HistoricoService {
         }
 
     }
+
+    public ResponseEntity<HistoricoDTO> deleteHistorico(Long id){
+        HistoricoCred historicoCred = historicoCredRepository.findById(id).orElse(null);
+        if(historicoCred != null){
+            historicoCredRepository.delete(historicoCred);
+            return ResponseEntity.ok(DozerConverter.parseObject(historicoCred, HistoricoDTO.class));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
