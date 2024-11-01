@@ -43,9 +43,8 @@ public class CredService {
     public ResponseEntity<SolCredDTO> updateSolicitacaoCredito(Long id, SolCredDTO solCredDTO){
         SolicitacaoCredito solicitacaoCredito = DozerConverter.parseObject(getSolCredById(id), SolicitacaoCredito.class);
         if (solicitacaoCredito != null){
-            SolicitacaoCredito solicitacao = solicitacaoCredito;
-            soliCredRepository.save(solicitacao);
-            return ResponseEntity.ok(DozerConverter.parseObject(solicitacao, SolCredDTO.class));
+            soliCredRepository.save(solicitacaoCredito);
+            return ResponseEntity.ok(DozerConverter.parseObject(solicitacaoCredito, SolCredDTO.class));
         }
         return ResponseEntity.notFound().build();
     }
