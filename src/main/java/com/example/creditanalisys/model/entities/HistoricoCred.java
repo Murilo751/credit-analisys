@@ -25,7 +25,5 @@ public class HistoricoCred {
     private int incidentes;
     private BigDecimal dividas;
 
-    @OneToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    private Long userId;
 }

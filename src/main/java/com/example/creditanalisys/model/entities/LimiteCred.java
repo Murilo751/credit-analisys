@@ -20,9 +20,7 @@ public class LimiteCred {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private Long userId;
     private BigDecimal valor;
     private LocalDate dataAprovacao;
 

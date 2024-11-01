@@ -21,8 +21,5 @@ public class AnaliseCred {
     @Enumerated(EnumType.STRING)
     private Status resultado;
     private LocalDate dataAnalise;
-
-    @ManyToOne
-    @JoinColumn(name = "solicitacaoId", nullable = false)
-    private SolicitacaoCredito solicitacao;
+    private Long solicitacaoId;
 }

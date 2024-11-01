@@ -24,17 +24,17 @@ public class AnaliseService {
     private CredService credService;
     private LimiteCred limiteCred;
 
-    public AnaliseCred createAnalise(AnaliseDTO analiseDTO){
+    public AnaliseCred createAnalise(AnaliseDTO analiseDTO,Long idSolicitacao){
 
-        SolCredDTO solicitacaoCreditoDTO = credService.getSolCredById(analiseDTO.getSolicitacaoId());
-        if(solicitacaoCreditoDTO == null){
+        SolicitacaoCredito solicitacaoCredito = DozerConverter.parseObject(credService.getSolCredById(analiseDTO.getSolicitacaoId()), SolicitacaoCredito.class);
+        if(solicitacaoCredito == null){
             throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + analiseDTO.getSolicitacaoId());
 
         }
 
         AnaliseCred analiseCred = new AnaliseCred();
         analiseCred.setResultado(Status.PENDENTE);
-        analiseCred.setSolicitacao(DozerConverter.parseObject(solicitacaoCreditoDTO, SolicitacaoCredito.class));
+        analiseCred.setSolicitacaoId(solicitacaoCredito.getId());
 
 
         return analiseCredRepository.save(analiseCred);
@@ -85,7 +85,7 @@ public class AnaliseService {
         }
 
         AnaliseCred analiseCred = new AnaliseCred();
-        analiseCred.setSolicitacao(solCred);
+        analiseCred.setSolicitacaoId(solCred.getId());
 
         boolean aprovado = isCredAprovado(solCred);
         analiseCred.setResultado(aprovado ? Status.APROVADO : Status.REJEITADO);

@@ -3,6 +3,7 @@ package com.example.creditanalisys.services;
 import com.example.creditanalisys.converter.DozerConverter;
 import com.example.creditanalisys.model.dtos.HistoricoDTO;
 import com.example.creditanalisys.model.entities.HistoricoCred;
+import com.example.creditanalisys.model.entities.User;
 import com.example.creditanalisys.repositories.HistoricoCredRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,17 @@ import java.util.List;
 @Service
 @AllArgsConstructor(onConstructor_ = @__(@Autowired))
 public class HistoricoService {
+    private final UserService userService;
     private HistoricoCredRepository historicoCredRepository;
 
-    public HistoricoDTO createHistorico(HistoricoDTO historicoDTO){
+    public HistoricoDTO createHistorico(HistoricoDTO historicoDTO, Long userId){
+        User catchUser = DozerConverter.parseObject(userService.getUserById(userId), User.class);
+        if(catchUser == null){
+            throw new RuntimeException("Solicitação de crédito não encontrada com o ID: " + userId);
+
+        }
         HistoricoCred historicoCred = DozerConverter.parseObject(historicoDTO, HistoricoCred.class);
+        historicoCred.setUserId(catchUser.getId());
         HistoricoCred savedCred = historicoCredRepository.save(historicoCred);
         return DozerConverter.parseObject(savedCred, HistoricoDTO.class);
     }
@@ -39,6 +47,7 @@ public class HistoricoService {
             historicoCred.setPagamentosPontuais(historicoDTO.getPagamentosPontuais());
             historicoCred.setIncidentes(historicoDTO.getIncidentes());
             historicoCred.setDividas(historicoDTO.getDividas());
+            historicoCred.setUserId(historicoDTO.getUserId());
             HistoricoCred historicoSaved = historicoCredRepository.save(historicoCred);
             return ResponseEntity.ok(DozerConverter.parseObject(historicoSaved, HistoricoDTO.class));
         } else {

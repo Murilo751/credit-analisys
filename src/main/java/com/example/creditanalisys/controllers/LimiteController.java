@@ -17,9 +17,9 @@ import java.util.List;
 public class LimiteController {
     private LimiteService limiteService;
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<LimiteDTO> createLimit(@RequestBody @Valid LimiteDTO limiteDTO){
-        LimiteDTO limiteCred = limiteService.createLimit(limiteDTO);
+    @PostMapping(value = "/create/{userId}")
+    public ResponseEntity<LimiteDTO> createLimit(@RequestBody @Valid LimiteDTO limiteDTO, @PathVariable @Valid Long userId){
+        LimiteDTO limiteCred = limiteService.createLimit(limiteDTO, userId);
         return ResponseEntity.ok(limiteCred);
     }
 

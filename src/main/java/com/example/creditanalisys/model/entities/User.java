@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity(name = "users")
 @Table(name = "users")
@@ -22,7 +21,4 @@ public class User {
     private String phone;
     private String email;
     private LocalDate birthday;
-
-    @OneToMany(mappedBy = "solicitacao.user") // Correção no `mappedBy`
-    private List<SolicitacaoCredito> solicitacoes;
 }

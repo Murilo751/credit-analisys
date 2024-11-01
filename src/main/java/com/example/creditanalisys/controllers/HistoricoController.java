@@ -18,9 +18,9 @@ import java.util.List;
 public class HistoricoController {
 
     private HistoricoService historicoService;
-    @PostMapping(value = "/create")
-    public ResponseEntity<HistoricoDTO> createHisorico(@RequestBody @Valid HistoricoDTO historicoDTO){
-        HistoricoDTO historicoCred = historicoService.createHistorico(historicoDTO);
+    @PostMapping(value = "/create/{userId}")
+    public ResponseEntity<HistoricoDTO> createHisorico(@RequestBody @Valid HistoricoDTO historicoDTO, @PathVariable @Valid Long userId){
+        HistoricoDTO historicoCred = historicoService.createHistorico(historicoDTO, userId);
         return ResponseEntity.ok(historicoCred);
     }
 
