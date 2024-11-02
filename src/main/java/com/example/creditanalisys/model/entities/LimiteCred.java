@@ -28,18 +28,22 @@ public class LimiteCred {
     private BigDecimal limitePadrao = new BigDecimal("10000");
 
     public BigDecimal calcularLimitePorHistorico(String historicoCred) {
-        switch (historicoCred.toLowerCase()) {
-            case "excelente":
-                return limitePadrao.multiply(new BigDecimal("1.5"));
-            case "bom":
-                return limitePadrao;
-            case "moderado":
-                return limitePadrao.multiply(new BigDecimal("0.8"));
-            case "ruim":
-                return limitePadrao.multiply(new BigDecimal("0.5"));
-            default:
-                return limitePadrao.multiply(new BigDecimal("0.5"));
+        if (historicoCred != null) {
+            historicoCred = historicoCred.toLowerCase();
+            switch (historicoCred.toLowerCase()) {
+                case "excelente":
+                    return limitePadrao.multiply(new BigDecimal("1.5"));
+                case "bom":
+                    return limitePadrao;
+                case "moderado":
+                    return limitePadrao.multiply(new BigDecimal("0.8"));
+                case "ruim":
+                    return limitePadrao.multiply(new BigDecimal("0.5"));
+                default:
+                    return limitePadrao.multiply(new BigDecimal("0.5"));
+            }
+        }else{
+            throw new IllegalArgumentException("O histórico de crédito é nulo.");
         }
     }
-
 }

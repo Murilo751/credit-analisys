@@ -13,6 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/limite")
+@RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class LimiteController {
     private LimiteService limiteService;

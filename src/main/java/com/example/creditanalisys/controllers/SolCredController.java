@@ -13,6 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/solicitacao")
+@RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SolCredController {
 
